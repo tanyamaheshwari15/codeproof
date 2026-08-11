@@ -7,6 +7,9 @@ import Dashboard from "./pages/Dashboard";
 import CodingWorkspace from "./pages/CodingWorkspace";
 import Problems from "./pages/Problems";
 import Progress from "./pages/Progress";
+import Submissions from "./pages/Submissions";
+import Settings from "./pages/Settings";
+import Account from "./pages/Account";
 
 function App() {
 
@@ -26,6 +29,9 @@ function App() {
           <Route path="problems" element={<Problems />} />
           <Route path="workspace" element={<CodingWorkspace />} />
           <Route path="progress" element={<Progress />} />
+          <Route path="submissions" element={<Submissions />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="account" element={<Account />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

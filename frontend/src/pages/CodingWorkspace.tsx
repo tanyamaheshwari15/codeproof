@@ -1,5 +1,5 @@
 function CodingWorkspace() {
-  return <h1>CodingWorkspace</h1>;
+  return <h1 className="text-center">CodingWorkspace</h1>;
 }
 
 export default CodingWorkspace;

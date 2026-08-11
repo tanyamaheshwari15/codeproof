@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -10,21 +10,22 @@ import Progress from "./pages/Progress";
 import Submissions from "./pages/Submissions";
 import Settings from "./pages/Settings";
 import Account from "./pages/Account";
+import Landing from "./pages/Landing";
 
 function App() {
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/health")
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error("Error fetching API:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/api/health")
+  //     .then((response) => response.json())
+  //     .catch((error) => {
+  //       console.error("Error fetching API:", error);
+  //     });
+  // }, []);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<AppLayout />}>
+        <Route element={<AppLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="problems" element={<Problems />} />
           <Route path="workspace" element={<CodingWorkspace />} />
@@ -33,6 +34,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="account" element={<Account />} />
         </Route>
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 
 export const registerUser = async (req, res) => {
   try {
@@ -50,6 +52,9 @@ export const loginUser = async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ message: "Email or password is incorrect" });
       }
+      const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET);
+      res.cookie("token", token, { httpOnly: true, secure: false });
+
       return res.status(200).json({ message: "Login successful" });
 
   } catch (error) {
@@ -59,7 +64,7 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try{
-    // Implement logout logic here (e.g., clearing session or token)
+    res.clearCookie("token");
     return res.status(200).json({ message: "Logout successful" });
   }catch (error) {
     return res.status(500).json({ message: "Error logging out user" });

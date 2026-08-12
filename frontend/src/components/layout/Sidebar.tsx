@@ -1,4 +1,5 @@
 import SidebarItem from "./SidebarItem";
+import LogoutButton from "./LogoutButton";
 
 export default function Sidebar(){
 	return (
@@ -10,9 +11,10 @@ export default function Sidebar(){
                 <SidebarItem to="/workspace" label="Coding Workspace" icon="bi-code-slash" />
                 <SidebarItem to="/progress" label="Progress" icon="bi-graph-up" />
                 <SidebarItem to="/submissions" label="Submissions" icon="bi-check2-square" />
-                <hr className="my-4 mt-90 border-gray-600" />
+                <hr className="my-4 mt-80 border-gray-600" />
                 <SidebarItem to="/settings" label="Settings" icon="bi-gear" />
                 <SidebarItem to="/account" label="Account" icon="bi-person-circle" />
+                <LogoutButton />
             </ul>
         </nav>
 	);

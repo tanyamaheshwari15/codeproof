@@ -11,6 +11,7 @@ import Submissions from "./pages/Submissions";
 import Settings from "./pages/Settings";
 import Account from "./pages/Account";
 import Landing from "./pages/Landing";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="problems" element={<Problems />} />
@@ -33,6 +35,7 @@ function App() {
           <Route path="submissions" element={<Submissions />} />
           <Route path="settings" element={<Settings />} />
           <Route path="account" element={<Account />} />
+        </Route>
         </Route>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />

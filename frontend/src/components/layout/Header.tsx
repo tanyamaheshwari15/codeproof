@@ -13,10 +13,10 @@ export default function Header() {
     "/account": "Account",
   };
 
-  const title = titles[location.pathname] || "CodeProof";
+  const title = titles[location.pathname];
 
   return (
-    <header className="bg-[#28374f] text-white p-4 mb-4 shadow-md flex items-center justify-between">
+    <header className="bg-slate-800 text-white p-4 mb-4 shadow-md flex items-center justify-between">
       <h1 className="text-xl font-bold ml-5">{title}</h1>
       <div className="d-flex">
         <button className="mr-5" type="button">✨AI</button>

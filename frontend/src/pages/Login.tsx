@@ -1,6 +1,36 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import api from "../services/api";
 
 export default function Login() {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState(
+    {
+      email : "",
+      password : ""
+    }
+  )
+
+  const handleInputChange = ( e: React.ChangeEvent<HTMLInputElement> ) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value
+    })
+  }
+
+  const handleSubmit = async ( e:React.FormEvent<HTMLFormElement> ) => {
+    e.preventDefault();
+
+    try{
+      await api.post("/auth/login", formData);
+      navigate("/dashboard");
+    }
+    catch(error){
+      console.error("Error during login:", error);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center px-6">
 
@@ -31,7 +61,7 @@ export default function Login() {
             Enter your credentials to access your account.
           </p>
 
-          <form className="mt-8 space-y-5">
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
 
             {/* Email */}
             <div>
@@ -48,6 +78,8 @@ export default function Login() {
                 <input
                   type="email"
                   id="email"
+                  value = {formData.email}
+                  onChange = {handleInputChange}
                   placeholder="you@example.com"
                   className="w-full pl-10 pr-3 py-3 bg-slate-950 border border-slate-700 rounded-lg
                              text-white placeholder-slate-600
@@ -81,6 +113,8 @@ export default function Login() {
                 <input
                   type="password"
                   id="password"
+                  value = {formData.password}
+                  onChange = {handleInputChange}
                   placeholder="Enter your password"
                   className="w-full pl-10 pr-3 py-3 bg-slate-950 border border-slate-700 rounded-lg
                              text-white placeholder-slate-600

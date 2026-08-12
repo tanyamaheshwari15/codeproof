@@ -2,7 +2,7 @@ import SidebarItem from "./SidebarItem";
 
 export default function Sidebar(){
 	return (
-		<nav className="bg-gray-800 text-white w-64 min-h-screen p-4">
+		<nav className="bg-slate-950 text-white w-64 min-h-screen p-4">
             <h1 className="text-2xl font-bold mb-10 mt-2">CodeProof</h1>
              <ul>
                 <SidebarItem to="/dashboard" label="Dashboard"  icon="bi-speedometer2" />

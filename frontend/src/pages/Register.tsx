@@ -1,17 +1,43 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import api from "../services/api";
 
 export default function Register() {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState(
+    {
+      name : "",
+      email : "",
+      password : ""
+    }
+  )
+
+  const handleInputChange = ( e: React.ChangeEvent<HTMLInputElement> ) => {
+    setFormData({
+      ...formData,
+      [e.target.id] : e.target.value
+    })
+  }
+
+  const handleSubmit = async ( e: React.FormEvent<HTMLFormElement> ) => {
+    e.preventDefault();
+
+    try{
+      await api.post("/auth/register", formData);
+      navigate("/login");
+    }catch(error){
+      console.error("Error during registration:", error);
+    }
+  }
+
   return (
     <div className="h-screen bg-slate-950 text-white flex items-center justify-center px-6">
-
       <div className="w-full max-w-md">
 
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link
-            to="/"
-            className="text-3xl font-bold tracking-tight"
-          >
+          <Link to="/" className="text-3xl font-bold tracking-tight">
             Code<span className="text-blue-400">Proof</span>
           </Link>
 
@@ -22,16 +48,13 @@ export default function Register() {
 
         {/* Register Card */}
         <div className="p-8 rounded-2xl border border-slate-800 bg-slate-900/80 shadow-2xl">
-
-          <h2 className="text-2xl font-bold">
-            Create account
-          </h2>
+          <h2 className="text-2xl font-bold">Create account</h2>
 
           <p className="mt-2 text-sm text-slate-400">
             Set up your CodeProof account to begin your journey.
           </p>
 
-          <form className="mt-8 space-y-5">
+          <form onSubmit = {handleSubmit} className="mt-8 space-y-5">
 
             {/* Name */}
             <div>
@@ -49,9 +72,9 @@ export default function Register() {
                   type="text"
                   id="name"
                   placeholder="Your name"
-                  className="w-full pl-10 pr-3 py-3 bg-slate-950 border border-slate-700 rounded-lg
-                             text-white placeholder-slate-600
-                             focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  value = {formData.name}
+                  onChange = {handleInputChange}
+                  className="w-full pl-10 pr-3 py-3 bg-slate-950 border border-slate-700 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -73,9 +96,9 @@ export default function Register() {
                   type="email"
                   id="email"
                   placeholder="you@example.com"
-                  className="w-full pl-10 pr-3 py-3 bg-slate-950 border border-slate-700 rounded-lg
-                             text-white placeholder-slate-600
-                             focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  value = {formData.email}
+                  onChange = {handleInputChange}
+                  className="w-full pl-10 pr-3 py-3 bg-slate-950 border border-slate-700 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -96,10 +119,10 @@ export default function Register() {
                 <input
                   type="password"
                   id="password"
+                  value = {formData.password}
+                  onChange = {handleInputChange}
                   placeholder="Create a password"
-                  className="w-full pl-10 pr-3 py-3 bg-slate-950 border border-slate-700 rounded-lg
-                             text-white placeholder-slate-600
-                             focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full pl-10 pr-3 py-3 bg-slate-950 border border-slate-700 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -108,14 +131,11 @@ export default function Register() {
             {/* Register Button */}
             <button
               type="submit"
-              className="w-full py-3 bg-blue-600 rounded-lg font-semibold
-                         hover:bg-blue-500 transition
-                         shadow-lg shadow-blue-600/20"
+              className="w-full py-3 bg-blue-600 rounded-lg font-semibold hover:bg-blue-500 transition shadow-lg shadow-blue-600/20"
             >
               Create account
               <i className="bi bi-arrow-right ml-2"></i>
             </button>
-
           </form>
 
           {/* Login */}
@@ -130,7 +150,6 @@ export default function Register() {
               </Link>
             </p>
           </div>
-
         </div>
 
         {/* Back */}

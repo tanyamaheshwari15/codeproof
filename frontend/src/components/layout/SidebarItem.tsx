@@ -4,7 +4,7 @@ import type { NavLinkRenderProps } from "react-router-dom";
 const navLinkStyles = ({ isActive }: NavLinkRenderProps) => ({
   color: isActive ? '#84baf0' : '#e9eef3',
   fontWeight: isActive ? 'bold' : 'normal',
-  padding: '20px 20px'
+  padding: '10px 20px'
 });
 
 type SidebarItemProps = {

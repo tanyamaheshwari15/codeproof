@@ -157,7 +157,7 @@ function Problems() {
                   className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400"
                   placeholder="Example Explanation"
                 />
-                <input value={formData.constraints[0]} onChange={handleConstraintChange} type="text" className="rounded w-full border border-slate-300 hover:border-slate-400" id="constraints" placeholder=" Constraints"></input>
+                <input value={formData.constraints[0]} onChange={handleConstraintChange} type="text" className="rounded w-full border border-slate-300 hover:border-slate-400" placeholder=" Constraints"></input>
                 <input value={formData.category} onChange={handleInputChange} type="text" className="rounded w-full border border-slate-300 hover:border-slate-400" id="category" placeholder=" Category"></input>
               </div>
 

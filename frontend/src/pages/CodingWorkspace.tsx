@@ -1,6 +1,42 @@
 import Editor from "@monaco-editor/react";
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import api from '../services/api';
+
+type ProblemById = {
+  problem: {
+    _id: string,
+    title: string,
+    description: string,
+    difficulty: "Easy" | "Medium" | "Hard",
+    examples: {
+      input: string;
+      output: string;
+      explanation?: string;
+    }[];
+    constraints: string[];
+    category: string,
+  }
+}
 
 function CodingWorkspace() {
+
+  const { id } = useParams();
+  const [problemData, setProblemData] = useState<ProblemById | null>(null);
+
+  useEffect(() => {
+    const fetchProblemData = async () => {
+      try {
+        const response = await api.get(`/problem/${id}`);
+        setProblemData(response.data);
+      } catch (error) {
+        console.error("Error fetching problem data:", error);
+      }
+    }
+
+    fetchProblemData();
+  },[id])
+
   return (
     <div className="h-[calc(100vh-0px)] flex flex-col">
 
@@ -8,18 +44,13 @@ function CodingWorkspace() {
       <div className="px-6 py-4 border-b border-gray-200 bg-white">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-gray-900">
+            <h1 className="text-xl font-semibold text-gray-700 mt-1">
               Coding Workspace
             </h1>
-
             <p className="text-sm text-gray-500 mt-1">
               Solve the problem and submit your solution.
             </p>
           </div>
-
-          <span className="text-sm text-gray-500">
-            Problem #1
-          </span>
         </div>
       </div>
 
@@ -34,23 +65,17 @@ function CodingWorkspace() {
             {/* Problem Header */}
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-gray-900">
-                Two Sum
+                {problemData?.problem.title}
               </h2>
 
               <span className="px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
-                Easy
+                {problemData?.problem.difficulty}
               </span>
             </div>
 
             <div className="flex items-center gap-2 mt-3">
               <span className="text-sm text-gray-500">
-                Array
-              </span>
-
-              <span className="text-gray-300">•</span>
-
-              <span className="text-sm text-gray-500">
-                Problem #1
+                {problemData?.problem.category}
               </span>
             </div>
 
@@ -62,9 +87,7 @@ function CodingWorkspace() {
               </h3>
 
               <p className="text-sm leading-6 text-gray-600">
-                You are given an array of integers and a target value.
-                Return the indices of the two numbers such that they add
-                up to the target.
+                {problemData?.problem.description}
               </p>
 
             </div>
@@ -78,32 +101,41 @@ function CodingWorkspace() {
 
               <div className="bg-white border border-gray-200 rounded-lg p-4 font-mono text-sm text-gray-700">
                 <p>
-                  Input: nums = [2, 7, 11, 15]
-                </p>
+                  {problemData?.problem.examples.map((example, index) => (
+                  <div
+                    key={index}
+                    className="bg-white border border-gray-200 rounded-lg p-4 font-mono text-sm text-gray-700 mb-4">
+                    <p>
+                      <span className="font-semibold">Input:</span> {example.input}
+                    </p>
 
-                <p className="mt-2">
-                  target = 9
-                </p>
+                    <p className="mt-2">
+                      <span className="font-semibold">Output:</span> {example.output}
+                    </p>
 
-                <p className="mt-2">
-                  Output: [0, 1]
+                    {example.explanation && (
+                      <p className="mt-2 font-sans text-gray-600">
+                        <span className="font-semibold">Explanation:</span> {example.explanation}
+                      </p>
+                    )}
+                  </div>
+                ))}
                 </p>
               </div>
 
             </div>
 
-            {/* Explanation */}
-            <div className="mt-8">
-
+            {/* Constraint */}
+           <div className="mt-8">
               <h3 className="font-semibold text-gray-900 mb-3">
-                Explanation
+                Constraints
               </h3>
 
-              <p className="text-sm leading-6 text-gray-600">
-                Because nums[0] + nums[1] equals the target,
-                we return [0, 1].
-              </p>
-
+              <ul className="list-disc pl-5 text-sm leading-6 text-gray-600 space-y-1">
+                {problemData?.problem.constraints.map((constraint, index) => (
+                  <li key={index}>{constraint}</li>
+                ))}
+              </ul>
             </div>
 
           </div>
@@ -134,13 +166,7 @@ function CodingWorkspace() {
             <Editor
               height="100%"
               defaultLanguage="java"
-              defaultValue={`public class Solution {
-
-                  public static void main(String[] args) {
-
-                  }
-
-              }`}
+              defaultValue="// Type your code here..."
               theme="vs-dark"
               options={{
                 minimap: {

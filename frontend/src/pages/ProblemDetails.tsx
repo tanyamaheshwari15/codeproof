@@ -1,5 +1,4 @@
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import api from '../services/api';
 
@@ -43,7 +42,7 @@ function ProblemDetails() {
         {/* Top Header */}
         <div className="px-6 py-4 border-b border-gray-200 bg-white">
           <div className="flex items-center justify-between">
-            
+
             <div>
               <h1 className="text-xl font-semibold text-gray-900">
                 Problem Details
@@ -119,8 +118,7 @@ function ProblemDetails() {
 
                     {example.explanation && (
                       <p className="mt-2 font-sans text-gray-600">
-                        <span className="font-semibold">Explanation:</span>{" "}
-                        {example.explanation}
+                        <span className="font-semibold">Explanation:</span> {example.explanation}
                       </p>
                     )}
                   </div>

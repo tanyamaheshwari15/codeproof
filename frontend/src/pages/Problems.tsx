@@ -12,9 +12,40 @@ type ProblemData = {
   }[];
 };
 
+type FormData = {
+    title: string;
+    description: string;
+    difficulty: "Easy" | "Medium" | "Hard";
+    category: string;
+};
+
 function Problems() {
 
   const [ProblemData, setProblemData] = useState<ProblemData | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [filter, setFilter] = useState("All")
+  const [formData, setFormData] = useState<FormData>({
+    title: "",
+    description: "",
+    difficulty: "Easy",
+    category: "",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async () => {
+      try {
+        await api.post("/problems", formData)
+        setShowModal(false)
+      } catch (error) {
+        console.error("Error during problem creation:", error);
+      }
+  }
 
   useEffect(() => {
     const fetchProblemData = async () => {
@@ -31,34 +62,91 @@ function Problems() {
 
   return (
     <div className="p-6 space-y-6">
-      <div>
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-xl text-gray-600">
           Practice coding problems and improve your skills.
         </h1>
+
+        <button type="button" onClick={() => setShowModal(true)} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+            <i className="bi bi-plus-lg mr-2"></i> Add
+        </button>
       </div>
 
+        {/* Modal */}
+        {showModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+            <form onSubmit={handleSubmit} className="w-full max-w-lg rounded-xl bg-white shadow-xl">
+
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-3 border-b">
+                <h2 className="text-lg font-semibold text-blue-900">
+                  Add Problem
+                </h2>
+
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="text-gray-500 hover:text-gray-700">
+                  <i className="bi bi-x-lg"></i>
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="px-6 py-5">
+                <input value={formData.title} onChange={handleInputChange} type="text" className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400" id="title" placeholder=" Title"></input>
+                <textarea value={formData.description} onChange={handleInputChange} className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400" id="description" placeholder=" Description"></textarea>
+                <select value={formData.difficulty} onChange={handleInputChange} className="rounded mb-3 w-full text-gray-500 border border-slate-300 hover:border-slate-400" id="difficulty">
+                  <option value="">Difficulty</option>
+                  <option value="Easy">Easy</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Hard">Hard</option>
+                </select>
+                <input value={formData.category} onChange={handleInputChange} type="text" className="rounded w-full border border-slate-300 hover:border-slate-400" id="category" placeholder=" Category"></input>
+              </div>
+
+              {/* Footer */}
+              <div className="flex justify-end gap-3 px-6 py-4">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+                  Close
+                </button>
+
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition">
+                  Save changes
+                </button>
+              </div>
+
+            </form>
+          </div>
+        )}
+
       <div className="flex flex-wrap gap-3">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
+        <button onClick={()=>setFilter("All")} className="px-4 py-2 bg-blue-600 text-white rounded-lg">
           All
         </button>
 
-        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+        <button onClick={()=>setFilter("Easy")} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
           Easy
         </button>
 
-        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+        <button onClick={()=>setFilter("Medium")} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
           Medium
         </button>
 
-        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+        <button onClick={()=>setFilter("Hard")} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
           Hard
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-        {ProblemData?.problems.map((problem) => (
+        {ProblemData?.problems.filter((problem) => filter === "All" || problem.difficulty === filter)
+        .map((problem) => (
           <ProblemCard
-            key={problem._id}
+            _id={problem._id}
             title={problem.title}
             description={problem.description}
             difficulty={problem.difficulty}
@@ -66,7 +154,7 @@ function Problems() {
           />
         ))}
       </div>
-      
+
     </div>
   );
 }

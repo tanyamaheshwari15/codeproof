@@ -12,6 +12,7 @@ import Settings from "./pages/Settings";
 import Account from "./pages/Account";
 import Landing from "./pages/Landing";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import ProblemDetails from './pages/ProblemDetails';
 
 function App() {
 
@@ -30,7 +31,9 @@ function App() {
         <Route element={<AppLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="problems" element={<Problems />} />
+          <Route path='details/:id' element={<ProblemDetails/>} />
           <Route path="workspace" element={<CodingWorkspace />} />
+          <Route path="workspace/:id" element={<CodingWorkspace />} />
           <Route path="progress" element={<Progress />} />
           <Route path="submissions" element={<Submissions />} />
           <Route path="settings" element={<Settings />} />

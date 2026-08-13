@@ -1,4 +1,7 @@
+import { useNavigate } from 'react-router-dom';
+
 type ProblemCardProps = {
+  _id: string,
   title: string;
   description: string;
   difficulty: "Easy" | "Medium" | "Hard";
@@ -6,13 +9,15 @@ type ProblemCardProps = {
 };
 
 export default function ProblemCard({
+  _id,
   title,
   description,
   difficulty,
   category,
 }: ProblemCardProps) {
+  const navigate = useNavigate();
   return (
-    <div className="bg-gray-100 border border-gray-200 rounded-xl p-5 hover:shadow-md transition">
+    <div onClick={() => navigate(`/details/${_id}`)} className="bg-gray-100 border border-gray-200 rounded-xl p-5 hover:shadow-md transition">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
 
@@ -29,8 +34,8 @@ export default function ProblemCard({
         <span className="text-sm text-gray-500">
           {category}
         </span>
-
-        <button className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-500 transition">
+ 
+        <button onClick={(e) => {e.stopPropagation(); navigate(`/workspace/${_id}`)}} className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-500 transition">
           Solve
         </button>
       </div>

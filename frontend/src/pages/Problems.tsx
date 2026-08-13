@@ -16,6 +16,12 @@ type FormData = {
     title: string;
     description: string;
     difficulty: "Easy" | "Medium" | "Hard";
+    examples: {
+      input: string;
+      output: string;
+      explanation?: string;
+    }[];
+    constraints: string[];
     category: string;
 };
 
@@ -28,6 +34,14 @@ function Problems() {
     title: "",
     description: "",
     difficulty: "Easy",
+    examples: [
+      {
+        input: "",
+        output: "",
+        explanation: "",
+      },
+    ],
+    constraints: [""],
     category: "",
   });
 
@@ -38,25 +52,48 @@ function Problems() {
     });
   };
 
+  const handleExampleChange = ( e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: "input" | "output" | "explanation" ) => {
+    setFormData({
+      ...formData,
+      examples: [
+        {
+          ...formData.examples[0],
+          [field]: e.target.value,
+        },
+      ],
+    });
+  };
+
+  const handleConstraintChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setFormData({
+      ...formData,
+      constraints: [e.target.value],
+    });
+  };
+
   const handleSubmit = async () => {
       try {
-        await api.post("/problems", formData)
-        setShowModal(false)
+        await api.post("/problems", formData);
+        await fetchProblemData();
+        setShowModal(false);
       } catch (error) {
         console.error("Error during problem creation:", error);
       }
   }
 
-  useEffect(() => {
-    const fetchProblemData = async () => {
-      try {
-        const response = await api.get("/getProblems");
-        setProblemData(response.data);
-      } catch (error) {
-        console.error("Error fetching problem data:", error);
-      }
+  const fetchProblemData = async () => {
+    try {
+      const response = await api.get("/getProblems");
+      setProblemData(response.data);
+    } catch (error) {
+      console.error("Error fetching problem data:", error);
     }
+  }
 
+  useEffect(() => {
     fetchProblemData();
   }, [])
 
@@ -96,11 +133,31 @@ function Problems() {
                 <input value={formData.title} onChange={handleInputChange} type="text" className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400" id="title" placeholder=" Title"></input>
                 <textarea value={formData.description} onChange={handleInputChange} className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400" id="description" placeholder=" Description"></textarea>
                 <select value={formData.difficulty} onChange={handleInputChange} className="rounded mb-3 w-full text-gray-500 border border-slate-300 hover:border-slate-400" id="difficulty">
-                  <option value="">Difficulty</option>
                   <option value="Easy">Easy</option>
                   <option value="Medium">Medium</option>
                   <option value="Hard">Hard</option>
                 </select>
+                <input
+                  value={formData.examples[0].input}
+                  onChange={(e) => handleExampleChange(e, "input")}
+                  type="text"
+                  className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400"
+                  placeholder="Example Input"
+                />
+                <input
+                  value={formData.examples[0].output}
+                  onChange={(e) => handleExampleChange(e, "output")}
+                  type="text"
+                  className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400"
+                  placeholder="Example Output"
+                />
+                <textarea
+                  value={formData.examples[0].explanation}
+                  onChange={(e) => handleExampleChange(e, "explanation")}
+                  className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400"
+                  placeholder="Example Explanation"
+                />
+                <input value={formData.constraints[0]} onChange={handleConstraintChange} type="text" className="rounded w-full border border-slate-300 hover:border-slate-400" id="constraints" placeholder=" Constraints"></input>
                 <input value={formData.category} onChange={handleInputChange} type="text" className="rounded w-full border border-slate-300 hover:border-slate-400" id="category" placeholder=" Category"></input>
               </div>
 

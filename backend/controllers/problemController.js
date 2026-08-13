@@ -2,9 +2,9 @@ import Problem from "../models/Problem.js";
 
 export const createProblems = async (req, res) => {
     try {
-        const { title, description, difficulty, category } = req.body
+        const { title, description, difficulty, examples, constraints, category } = req.body
 
-        if(!title || !description || !difficulty || !category){
+        if(!title || !description || !difficulty || !examples?.length || !category){
             return res.status(400).json({ message: "All field are required" })
         }
 
@@ -19,6 +19,8 @@ export const createProblems = async (req, res) => {
             title,
             description,
             difficulty,
+            examples,
+            constraints,
             category
         });
         return res.status(201).json(
@@ -39,5 +41,20 @@ export const getProblems = async (req, res) => {
         return res.status(200).json({ problems })
     } catch (error) {
         return res.status(500).json({ message: "Error retrieving problems" })
+    }
+};
+
+export const getProblemById = async (req, res) => {
+    try {
+        const { id } = req.params
+        const problem = await Problem.findById(id);
+        if (!problem) {
+            return res.status(404).json({
+                message: "Problem not found"
+            });
+        }
+        return res.status(200).json({ problem })
+    } catch (error) {
+        return res.status(500).json({ message: "Error finding problem" })
     }
 };

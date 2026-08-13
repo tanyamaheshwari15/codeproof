@@ -18,6 +18,26 @@ const problemSchema = new mongoose.Schema(
             enum: ['Easy', 'Medium', 'Hard'],
             required: true
         },
+        examples: [
+        {
+            input: {
+            type: String,
+            required: true
+            },
+            output: {
+            type: String,
+            required: true
+            },
+            explanation: {
+            type: String
+            }
+        }
+        ],
+        constraints: [
+        {
+            type: String
+        }
+        ],
         category: {
             type: String,
             required: true,

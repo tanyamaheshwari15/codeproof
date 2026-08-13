@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import "dotenv/config";
 import authRoutes from "./routes/authRoutes.js";
 import problemRoutes from "./routes/problemRoutes.js"
+import submissionRoutes from "./routes/submissionRoutes.js";
 import cookieParser from "cookie-parser";
 
 const PORT = process.env.PORT;
@@ -15,10 +16,13 @@ app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
 }));
+
 app.use(express.json());
 app.use(cookieParser());
+
 app.use("/api/auth", authRoutes);
 app.use("/api", problemRoutes);
+app.use("/api", submissionRoutes);
 
 app.get("/api/health", (req, res) => {
     res.json({

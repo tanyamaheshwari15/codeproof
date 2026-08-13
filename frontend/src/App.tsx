@@ -13,6 +13,7 @@ import Account from "./pages/Account";
 import Landing from "./pages/Landing";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import ProblemDetails from './pages/ProblemDetails';
+import SubmissionDetails from './pages/SubmissionDetails';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="workspace/:id" element={<CodingWorkspace />} />
           <Route path="progress" element={<Progress />} />
           <Route path="submissions" element={<Submissions />} />
+          <Route path='submission/:id' element={<SubmissionDetails/>} />
           <Route path="settings" element={<Settings />} />
           <Route path="account" element={<Account />} />
         </Route>

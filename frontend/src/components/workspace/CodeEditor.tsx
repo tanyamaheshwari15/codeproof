@@ -1,17 +1,23 @@
 import Editor from "@monaco-editor/react";
+import { useState } from "react";
+
 
 function CodeEditor() {
+
+  const [language, setLanguage] = useState("java");
+  const [code, setCode] = useState("// Type your code here...");
+
   return (
     <div className="flex-1 min-w-0 flex flex-col bg-gray-900">
 
       {/* Editor Toolbar */}
       <div className="h-14 px-4 flex items-center justify-between border-b border-gray-700 bg-gray-900">
 
-        <select className="bg-gray-800 text-gray-200 text-sm rounded-md px-3 py-2 border border-gray-700 outline-none">
-          <option>Java</option>
-          <option>JavaScript</option>
-          <option>C++</option>
-          <option>Python</option>
+        <select  value={language} onChange={(e) => setLanguage(e.target.value)} className="bg-gray-800 text-gray-200 text-sm rounded-md px-3 py-2 border border-gray-700 outline-none">
+          <option value="java">Java</option>
+          <option value="javascript">JavaScript</option>
+          <option value="cpp">C++</option>
+          <option value="python">Python</option>
         </select>
 
         <button className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-500 transition">
@@ -24,8 +30,9 @@ function CodeEditor() {
       <div className="flex-1 min-h-0">
         <Editor
           height="100%"
-          defaultLanguage="java"
-          defaultValue="// Type your code here..."
+          language={language}
+          value={code}
+          onChange={(value) => setCode(value || "")}
           theme="vs-dark"
           options={{
             minimap: {

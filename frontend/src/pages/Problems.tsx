@@ -23,6 +23,10 @@ type FormData = {
     }[];
     constraints: string[];
     category: string;
+    testCases: {
+      input: string;
+      expectedOutput: string;
+    }[];
 };
 
 function Problems() {
@@ -43,6 +47,12 @@ function Problems() {
     ],
     constraints: [""],
     category: "",
+    testCases: [
+      {
+        input: "",
+        expectedOutput: ""
+      },
+    ],
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -59,6 +69,18 @@ function Problems() {
       examples: [
         {
           ...formData.examples[0],
+          [field]: e.target.value,
+        },
+      ],
+    });
+  };
+
+  const handletestChange = (e:React.ChangeEvent<HTMLInputElement>, field: "input" | "expectedOutput") => {
+    setFormData({
+      ...formData,
+      testCases: [
+        {
+          ...formData.testCases[0],
           [field]: e.target.value,
         },
       ],
@@ -157,8 +179,22 @@ function Problems() {
                   className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400"
                   placeholder="Example Explanation"
                 />
-                <input value={formData.constraints[0]} onChange={handleConstraintChange} type="text" className="rounded w-full border border-slate-300 hover:border-slate-400" placeholder=" Constraints"></input>
-                <input value={formData.category} onChange={handleInputChange} type="text" className="rounded w-full border border-slate-300 hover:border-slate-400" id="category" placeholder=" Category"></input>
+                <input value={formData.constraints[0]} onChange={handleConstraintChange} type="text" className="mb-3 rounded w-full border border-slate-300 hover:border-slate-400" placeholder=" Constraints"></input>
+                <input value={formData.category} onChange={handleInputChange} type="text" className="mb-3 rounded w-full border border-slate-300 hover:border-slate-400" id="category" placeholder=" Category"></input>
+                <input
+                  value={formData.testCases[0].input}
+                  onChange={(e) => handletestChange(e, "input")}
+                  type="text"
+                  className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400"
+                  placeholder="Test Case Input"
+                />
+                <input
+                  value={formData.testCases[0].expectedOutput}
+                  onChange={(e) => handletestChange(e, "expectedOutput")}
+                  type="text"
+                  className="rounded mb-3 w-full border border-slate-300 hover:border-slate-400"
+                  placeholder="Test Case Expected Output"
+                />
               </div>
 
               {/* Footer */}

@@ -38,6 +38,18 @@ const problemSchema = new mongoose.Schema(
             type: String
         }
         ],
+        testCases: [
+        {
+            input: {
+            type: String,
+            required: true
+            },
+            expectedOutput: {
+            type: String,
+            required: true
+            }
+        }
+        ],
         category: {
             type: String,
             required: true,

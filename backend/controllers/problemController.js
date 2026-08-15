@@ -2,9 +2,9 @@ import Problem from "../models/Problem.js";
 
 export const createProblems = async (req, res) => {
     try {
-        const { title, description, difficulty, examples, constraints, category } = req.body
+        const { title, description, difficulty, examples, constraints, category, testCases } = req.body
 
-        if(!title || !description || !difficulty || !examples?.length || !category){
+        if(!title || !description || !difficulty || !examples?.length || !category || !testCases){
             return res.status(400).json({ message: "All field are required" })
         }
 
@@ -21,7 +21,8 @@ export const createProblems = async (req, res) => {
             difficulty,
             examples,
             constraints,
-            category
+            category,
+            testCases
         });
         return res.status(201).json(
             { 

@@ -6,6 +6,7 @@ import "dotenv/config";
 import authRoutes from "./routes/authRoutes.js";
 import problemRoutes from "./routes/problemRoutes.js"
 import submissionRoutes from "./routes/submissionRoutes.js";
+import runRoutes from "./routes/runRoutes.js";
 import cookieParser from "cookie-parser";
 
 const PORT = process.env.PORT;
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api", problemRoutes);
 app.use("/api", submissionRoutes);
+app.use("/api", runRoutes);
 
 app.get("/api/health", (req, res) => {
     res.json({

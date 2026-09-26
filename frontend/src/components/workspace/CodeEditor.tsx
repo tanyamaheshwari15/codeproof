@@ -1,11 +1,18 @@
 import Editor from "@monaco-editor/react";
 import { useState } from "react";
+import api from "../../services/api";
 
-
-function CodeEditor() {
+function CodeEditor({ problem }: { problem: string | undefined }) {
+  console.log(problem);
 
   const [language, setLanguage] = useState("java");
   const [code, setCode] = useState("// Type your code here...");
+  const [testResults, setTestResults] = useState<TestCase[] | null>(null);
+
+  const handleRunCode = async() => {
+    const response = await api.post("/run", { problem, code, language });
+    setTestResults(response.data.result);
+  };
 
   return (
     <div className="flex-1 min-w-0 flex flex-col bg-gray-900">
@@ -15,12 +22,11 @@ function CodeEditor() {
 
         <select  value={language} onChange={(e) => setLanguage(e.target.value)} className="bg-gray-800 text-gray-200 text-sm rounded-md px-3 py-2 border border-gray-700 outline-none">
           <option value="java">Java</option>
-          <option value="javascript">JavaScript</option>
           <option value="cpp">C++</option>
           <option value="python">Python</option>
         </select>
 
-        <button className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-500 transition">
+        <button onClick={() => handleRunCode()} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-500 transition">
           Run
         </button>
 
@@ -61,7 +67,7 @@ function CodeEditor() {
         </div>
 
         <div className="p-4 text-sm text-gray-500">
-          Run your code to see the results here.
+          {testResults ? testResults : "Run your code to see the results here."}
         </div>
 
       </div>

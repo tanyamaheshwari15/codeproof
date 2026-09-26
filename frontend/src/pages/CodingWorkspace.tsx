@@ -54,7 +54,7 @@ function CodingWorkspace() {
       {/* Workspace */}
       <div className="flex flex-1 min-h-0">
         <ProblemPanel problem={problemData?.problem} />
-        <CodeEditor />
+        <CodeEditor problem={id} />
       </div>
 
     </div>

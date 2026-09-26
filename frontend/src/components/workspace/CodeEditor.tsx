@@ -2,6 +2,12 @@ import Editor from "@monaco-editor/react";
 import { useState } from "react";
 import api from "../../services/api";
 
+type TestCase = {
+  _id: string;
+  input: string;
+  expectedOutput: string;
+}
+
 function CodeEditor({ problem }: { problem: string | undefined }) {
   console.log(problem);
 
@@ -61,13 +67,15 @@ function CodeEditor({ problem }: { problem: string | undefined }) {
             Test Results
           </span>
 
-          <span className="text-xs text-gray-500">
-            No tests run
-          </span>
         </div>
 
         <div className="p-4 text-sm text-gray-500">
-          {testResults ? testResults : "Run your code to see the results here."}
+          {testResults?.map((TestCase) => (
+            <div key = {TestCase._id} className="bg-gray-900">
+              <strong>Input: </strong> {TestCase.input} <br />
+              <strong>Expected Output: </strong> {TestCase.expectedOutput}
+            </div>
+          ))}
         </div>
 
       </div>
